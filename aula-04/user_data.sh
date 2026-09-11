@@ -10,16 +10,16 @@ NODE_VERSION="v18.20.8"
 
 cd /tmp
 
-wget -q "https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.xz"
+wget -q "https://nodejs.org/dist/$${NODE_VERSION}/node-$${NODE_VERSION}-linux-x64.tar.xz"
 
 mkdir -p /usr/local/lib/nodejs
 
-tar -xJf "node-${NODE_VERSION}-linux-x64.tar.xz" \
+tar -xJf "node-$${NODE_VERSION}-linux-x64.tar.xz" \
   -C /usr/local/lib/nodejs
 
-ln -sf "/usr/local/lib/nodejs/node-${NODE_VERSION}-linux-x64/bin/node" /usr/local/bin/node
-ln -sf "/usr/local/lib/nodejs/node-${NODE_VERSION}-linux-x64/bin/npm" /usr/local/bin/npm
-ln -sf "/usr/local/lib/nodejs/node-${NODE_VERSION}-linux-x64/bin/npx" /usr/local/bin/npx
+ln -sf "/usr/local/lib/nodejs/node-$${NODE_VERSION}-linux-x64/bin/node" /usr/local/bin/node
+ln -sf "/usr/local/lib/nodejs/node-$${NODE_VERSION}-linux-x64/bin/npm" /usr/local/bin/npm
+ln -sf "/usr/local/lib/nodejs/node-$${NODE_VERSION}-linux-x64/bin/npx" /usr/local/bin/npx
 
 node --version
 npm --version

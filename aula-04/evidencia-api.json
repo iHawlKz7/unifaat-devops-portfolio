@@ -1,0 +1,2 @@
+{"message":"TechNova API - Aula 04 Multi-AZ","status":"running","hostname":"ip-10-0-1-233.ec2.internal","environment":"AWS EC2"}
+{"status":"healthy","service":"technova-api","timestamp":"2026-09-11T00:42:04.245Z"}

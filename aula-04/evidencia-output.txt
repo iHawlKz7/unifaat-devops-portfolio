@@ -1,0 +1,14 @@
+api_security_group_id = "sg-0ebc6bff6da008ddd"
+api_url = "http://54.147.31.188:3000"
+db_security_group_id = "sg-0fd975b118010729f"
+ec2_public_ip = "54.147.31.188"
+private_subnet_ids = [
+  "subnet-0b4330983b00838db",
+  "subnet-01e4639dfa1714c31",
+]
+public_subnet_ids = [
+  "subnet-0ede80310a8dc64ec",
+  "subnet-0604799fc734a3484",
+]
+ssh_command = "ssh -i ~/.ssh/technova-key ec2-user@54.147.31.188"
+vpc_id = "vpc-0cad2689e44838d1c"

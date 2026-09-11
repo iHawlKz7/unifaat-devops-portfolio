@@ -1,0 +1,586 @@
+data.aws_availability_zones.available: Reading...
+aws_key_pair.main: Refreshing state... [id=technova-key]
+aws_vpc.main: Refreshing state... [id=vpc-0cad2689e44838d1c]
+data.aws_ami.amazon_linux_2023: Reading...
+data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+data.aws_ami.amazon_linux_2023: Read complete after 1s [id=ami-0b5358cc8c5df0b02]
+aws_security_group.api: Refreshing state... [id=sg-0ebc6bff6da008ddd]
+aws_security_group.db: Refreshing state... [id=sg-0fd975b118010729f]
+aws_subnet.public[1]: Refreshing state... [id=subnet-0604799fc734a3484]
+aws_subnet.public[0]: Refreshing state... [id=subnet-0ede80310a8dc64ec]
+aws_subnet.private[0]: Refreshing state... [id=subnet-0b4330983b00838db]
+aws_internet_gateway.main: Refreshing state... [id=igw-004adb0981555169d]
+aws_subnet.private[1]: Refreshing state... [id=subnet-01e4639dfa1714c31]
+aws_route_table.public: Refreshing state... [id=rtb-03f53c0b206d5c952]
+aws_instance.api: Refreshing state... [id=i-00c7c40a6a64fc3d1]
+aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-056b1941729632e7e]
+aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-09fa38eabf4d6bdd5]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_instance.api will be destroyed
+  - resource "aws_instance" "api" {
+      - ami                                  = "ami-0b5358cc8c5df0b02" -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:818891017055:instance/i-00c7c40a6a64fc3d1" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "us-east-1a" -> null
+      - cpu_core_count                       = 1 -> null
+      - cpu_threads_per_core                 = 1 -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - iam_instance_profile                 = "LabInstanceProfile" -> null
+      - id                                   = "i-00c7c40a6a64fc3d1" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t2.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - key_name                             = "technova-key" -> null
+      - monitoring                           = false -> null
+      - placement_partition_number           = 0 -> null
+      - primary_network_interface_id         = "eni-0f891f55c188a884b" -> null
+      - private_dns                          = "ip-10-0-1-233.ec2.internal" -> null
+      - private_ip                           = "10.0.1.233" -> null
+      - public_dns                           = "ec2-54-147-31-188.compute-1.amazonaws.com" -> null
+      - public_ip                            = "54.147.31.188" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-0ede80310a8dc64ec" -> null
+      - tags                                 = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-api"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - tags_all                             = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-api"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data                            = "5ca32edc8aced709bb519ebf829e175ceba4383a" -> null
+      - user_data_replace_on_change          = true -> null
+      - volume_tags                          = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-api-disk"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - vpc_security_group_ids               = [
+          - "sg-0ebc6bff6da008ddd",
+        ] -> null
+        # (6 unchanged attributes hidden)
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - cpu_options {
+          - core_count       = 1 -> null
+          - threads_per_core = 1 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 2 -> null
+          - http_tokens                 = "required" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/xvda" -> null
+          - encrypted             = false -> null
+          - iops                  = 100 -> null
+          - tags                  = {} -> null
+          - tags_all              = {} -> null
+          - throughput            = 0 -> null
+          - volume_id             = "vol-0dcc8de884bc7ba23" -> null
+          - volume_size           = 8 -> null
+          - volume_type           = "gp2" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # aws_internet_gateway.main will be destroyed
+  - resource "aws_internet_gateway" "main" {
+      - arn      = "arn:aws:ec2:us-east-1:818891017055:internet-gateway/igw-004adb0981555169d" -> null
+      - id       = "igw-004adb0981555169d" -> null
+      - owner_id = "818891017055" -> null
+      - tags     = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-igw"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - tags_all = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-igw"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - vpc_id   = "vpc-0cad2689e44838d1c" -> null
+    }
+
+  # aws_key_pair.main will be destroyed
+  - resource "aws_key_pair" "main" {
+      - arn             = "arn:aws:ec2:us-east-1:818891017055:key-pair/technova-key" -> null
+      - fingerprint     = "03:f9:a8:ae:b8:6f:75:95:13:f5:69:cc:43:fa:06:93" -> null
+      - id              = "technova-key" -> null
+      - key_name        = "technova-key" -> null
+      - key_pair_id     = "key-0ec07b963a17c346d" -> null
+      - key_type        = "rsa" -> null
+      - public_key      = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcFJ782eroJ2T8oUHZvHohb9HWjMryhn7y7jSuoJl6NxCDG198+5IxwGdTMq3Bp4Itn4ONxopNFBXGtZZBOnLMJTGprerzSMjtIRznvZo8fgZXdLnFCg2+0KVE1rEfVyjgB5QhpkOHdOU1cEN7bfvp7lTjF9OvguZVP7jD4Hc2r2/n78TLD1aa42lwB7y8+8Q+owLAEBLHmX6zTwC8t15CEjdYohncAr4jqbXZhmnxRGNqsCb6NIVTm6MFKNXSC91jLWR+L6fde0Kz7xEC660w7o8wPeZYADSV6XtYCymVnj2b0DDSSZOm7cIufKKCUTfg5PCFZaYXB9DkljHyB9ObnAEagX8JQqwreDTTPD4ctJrZEP9zizIv7n3jZQE49PU3LTuJ3ROXE3RGpmPdxPpEYEjEe8kbDBamIqkk7zHu3EuCgwg7piKRp6ezv/Csgj5FC0rsO/0Tbguy2QauOlBo89AYIuChKkN/gCvJWAwfUvMAm/EJXscQHbRHY9UsIuTY75w5q1hC3iuSRbNYZt5ebKhNaX2YH6FXClU/4wz+QuqKxwFRgcSWJSvrMNufwvwFAl0tZKmlnMw+0792KNOy+781MmFh8Ix02vuGBrxw2gks9aOhMPTz0s4BhAgc4bEVui8ek+V5FP3BvO+fa2wyDPkWOl+mDEmFxR8HbK+fRQ== emar@LAPTOP-S71AS4F9" -> null
+      - tags            = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-key"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - tags_all        = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-key"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_route_table.public will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:us-east-1:818891017055:route-table/rtb-03f53c0b206d5c952" -> null
+      - id               = "rtb-03f53c0b206d5c952" -> null
+      - owner_id         = "818891017055" -> null
+      - propagating_vgws = [] -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-004adb0981555169d"
+                # (11 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-public-rt"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - tags_all         = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-public-rt"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - vpc_id           = "vpc-0cad2689e44838d1c" -> null
+    }
+
+  # aws_route_table_association.public[0] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-056b1941729632e7e" -> null
+      - route_table_id = "rtb-03f53c0b206d5c952" -> null
+      - subnet_id      = "subnet-0ede80310a8dc64ec" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_route_table_association.public[1] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-09fa38eabf4d6bdd5" -> null
+      - route_table_id = "rtb-03f53c0b206d5c952" -> null
+      - subnet_id      = "subnet-0604799fc734a3484" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_security_group.api will be destroyed
+  - resource "aws_security_group" "api" {
+      - arn                    = "arn:aws:ec2:us-east-1:818891017055:security-group/sg-0ebc6bff6da008ddd" -> null
+      - description            = "Security Group da API TechNova" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Todo trafego de saida"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-0ebc6bff6da008ddd" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "API Node.js"
+              - from_port        = 3000
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 3000
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "SSH"
+              - from_port        = 22
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 22
+            },
+        ] -> null
+      - name                   = "technova-api-sg" -> null
+      - owner_id               = "818891017055" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-api-sg"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-api-sg"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - vpc_id                 = "vpc-0cad2689e44838d1c" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_security_group.db will be destroyed
+  - resource "aws_security_group" "db" {
+      - arn                    = "arn:aws:ec2:us-east-1:818891017055:security-group/sg-0fd975b118010729f" -> null
+      - description            = "Security Group do banco de dados" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Todo trafego de saida"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-0fd975b118010729f" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "10.0.0.0/16",
+                ]
+              - description      = "PostgreSQL interno"
+              - from_port        = 5432
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 5432
+            },
+        ] -> null
+      - name                   = "technova-db-sg" -> null
+      - owner_id               = "818891017055" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-db-sg"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-db-sg"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - vpc_id                 = "vpc-0cad2689e44838d1c" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_subnet.private[0] will be destroyed
+  - resource "aws_subnet" "private" {
+      - arn                                            = "arn:aws:ec2:us-east-1:818891017055:subnet/subnet-0b4330983b00838db" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1a" -> null
+      - availability_zone_id                           = "use1-az4" -> null
+      - cidr_block                                     = "10.0.2.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0b4330983b00838db" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = false -> null
+      - owner_id                                       = "818891017055" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - tags                                           = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-private-subnet-1"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+          - "Type"        = "private"
+        } -> null
+      - tags_all                                       = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-private-subnet-1"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+          - "Type"        = "private"
+        } -> null
+      - vpc_id                                         = "vpc-0cad2689e44838d1c" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_subnet.private[1] will be destroyed
+  - resource "aws_subnet" "private" {
+      - arn                                            = "arn:aws:ec2:us-east-1:818891017055:subnet/subnet-01e4639dfa1714c31" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1b" -> null
+      - availability_zone_id                           = "use1-az6" -> null
+      - cidr_block                                     = "10.0.4.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-01e4639dfa1714c31" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = false -> null
+      - owner_id                                       = "818891017055" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - tags                                           = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-private-subnet-2"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+          - "Type"        = "private"
+        } -> null
+      - tags_all                                       = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-private-subnet-2"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+          - "Type"        = "private"
+        } -> null
+      - vpc_id                                         = "vpc-0cad2689e44838d1c" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_subnet.public[0] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:us-east-1:818891017055:subnet/subnet-0ede80310a8dc64ec" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1a" -> null
+      - availability_zone_id                           = "use1-az4" -> null
+      - cidr_block                                     = "10.0.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0ede80310a8dc64ec" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "818891017055" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - tags                                           = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-public-subnet-1"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+          - "Type"        = "public"
+        } -> null
+      - tags_all                                       = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-public-subnet-1"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+          - "Type"        = "public"
+        } -> null
+      - vpc_id                                         = "vpc-0cad2689e44838d1c" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_subnet.public[1] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:us-east-1:818891017055:subnet/subnet-0604799fc734a3484" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1b" -> null
+      - availability_zone_id                           = "use1-az6" -> null
+      - cidr_block                                     = "10.0.3.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0604799fc734a3484" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "818891017055" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - tags                                           = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-public-subnet-2"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+          - "Type"        = "public"
+        } -> null
+      - tags_all                                       = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-public-subnet-2"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+          - "Type"        = "public"
+        } -> null
+      - vpc_id                                         = "vpc-0cad2689e44838d1c" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_vpc.main will be destroyed
+  - resource "aws_vpc" "main" {
+      - arn                                  = "arn:aws:ec2:us-east-1:818891017055:vpc/vpc-0cad2689e44838d1c" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.0.0.0/16" -> null
+      - default_network_acl_id               = "acl-099b47a8892094af4" -> null
+      - default_route_table_id               = "rtb-05f129c20b8390171" -> null
+      - default_security_group_id            = "sg-0bd783eff034b06e6" -> null
+      - dhcp_options_id                      = "dopt-066db1cb5f2643b9d" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-0cad2689e44838d1c" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-05f129c20b8390171" -> null
+      - owner_id                             = "818891017055" -> null
+      - tags                                 = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-vpc"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+      - tags_all                             = {
+          - "Environment" = "development"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "technova-vpc"
+          - "Owner"       = "6325192"
+          - "Project"     = "TechNova"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 13 to destroy.
+
+Changes to Outputs:
+  - api_security_group_id = "sg-0ebc6bff6da008ddd" -> null
+  - api_url               = "http://54.147.31.188:3000" -> null
+  - db_security_group_id  = "sg-0fd975b118010729f" -> null
+  - ec2_public_ip         = "54.147.31.188" -> null
+  - private_subnet_ids    = [
+      - "subnet-0b4330983b00838db",
+      - "subnet-01e4639dfa1714c31",
+    ] -> null
+  - public_subnet_ids     = [
+      - "subnet-0ede80310a8dc64ec",
+      - "subnet-0604799fc734a3484",
+    ] -> null
+  - ssh_command           = "ssh -i ~/.ssh/technova-key ec2-user@54.147.31.188" -> null
+  - vpc_id                = "vpc-0cad2689e44838d1c" -> null
+aws_security_group.db: Destroying... [id=sg-0fd975b118010729f]
+aws_route_table_association.public[0]: Destroying... [id=rtbassoc-056b1941729632e7e]
+aws_instance.api: Destroying... [id=i-00c7c40a6a64fc3d1]
+aws_route_table_association.public[1]: Destroying... [id=rtbassoc-09fa38eabf4d6bdd5]
+aws_subnet.private[0]: Destroying... [id=subnet-0b4330983b00838db]
+aws_subnet.private[1]: Destroying... [id=subnet-01e4639dfa1714c31]
+aws_route_table_association.public[0]: Destruction complete after 1s
+aws_route_table_association.public[1]: Destruction complete after 1s
+aws_route_table.public: Destroying... [id=rtb-03f53c0b206d5c952]
+aws_subnet.private[1]: Destruction complete after 1s
+aws_security_group.db: Destruction complete after 1s
+aws_subnet.private[0]: Destruction complete after 1s
+aws_route_table.public: Destruction complete after 1s
+aws_internet_gateway.main: Destroying... [id=igw-004adb0981555169d]
+aws_instance.api: Still destroying... [id=i-00c7c40a6a64fc3d1, 00m10s elapsed]
+aws_internet_gateway.main: Still destroying... [id=igw-004adb0981555169d, 00m10s elapsed]
+aws_instance.api: Still destroying... [id=i-00c7c40a6a64fc3d1, 00m20s elapsed]
+aws_internet_gateway.main: Destruction complete after 19s
+aws_instance.api: Still destroying... [id=i-00c7c40a6a64fc3d1, 00m30s elapsed]
+aws_instance.api: Destruction complete after 31s
+aws_subnet.public[1]: Destroying... [id=subnet-0604799fc734a3484]
+aws_security_group.api: Destroying... [id=sg-0ebc6bff6da008ddd]
+aws_key_pair.main: Destroying... [id=technova-key]
+aws_subnet.public[0]: Destroying... [id=subnet-0ede80310a8dc64ec]
+aws_key_pair.main: Destruction complete after 0s
+aws_subnet.public[1]: Destruction complete after 1s
+aws_subnet.public[0]: Destruction complete after 1s
+aws_security_group.api: Destruction complete after 1s
+aws_vpc.main: Destroying... [id=vpc-0cad2689e44838d1c]
+aws_vpc.main: Destruction complete after 1s
+
+Destroy complete! Resources: 13 destroyed.

@@ -5,7 +5,7 @@ set -eux
 exec > >(tee /var/log/technova-user-data.log | logger -t user-data -s 2>/dev/console) 2>&1
 
 dnf update -y
-dnf install -y git curl
+dnf install -y git
 
 curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
 dnf install -y nodejs

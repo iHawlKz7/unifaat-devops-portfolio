@@ -1,0 +1,42 @@
+=== VERSIONAMENTO ===
+{
+    "Status": "Enabled"
+}
+=== ENCRIPTACAO ===
+{
+    "ServerSideEncryptionConfiguration": {
+        "Rules": [
+            {
+                "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "aws:kms"
+                },
+                "BucketKeyEnabled": false,
+                "BlockedEncryptionTypes": {
+                    "EncryptionType": [
+                        "SSE-C"
+                    ]
+                }
+            }
+        ]
+    }
+}
+=== BLOCK PUBLIC ACCESS ===
+{
+    "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+    }
+}
+=== DYNAMODB ===
+{
+    "Name": "technova-tf-locks-6325192",
+    "KeySchema": [
+        {
+            "AttributeName": "LockID",
+            "KeyType": "HASH"
+        }
+    ],
+    "BillingMode": "PAY_PER_REQUEST"
+}

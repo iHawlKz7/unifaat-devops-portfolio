@@ -1,0 +1,115 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  ai-review:
+    name: AI Review
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Obter branch base
+        run: |
+          git fetch origin "${{ github.base_ref }}"
+
+      - name: Gerar diff do PR
+        run: |
+          git diff \
+            "origin/${{ github.base_ref }}...HEAD" \
+            -- \
+            '*.js' \
+            '*.ts' \
+            '*.json' \
+            '*.yml' \
+            '*.yaml' \
+            'Dockerfile*' \
+            > /tmp/pr-diff.txt
+
+          echo "===== ARQUIVOS ALTERADOS ====="
+          git diff \
+            --name-only \
+            "origin/${{ github.base_ref }}...HEAD"
+
+          echo
+          echo "===== TAMANHO DO DIFF ====="
+          wc -l /tmp/pr-diff.txt
+
+      - name: Executar AI Review
+        id: review
+        run: node .github/scripts/ai-review.js
+        env:
+          DIFF_FILE: /tmp/pr-diff.txt
+
+      - name: Postar ou atualizar comentario no PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+
+            const resultFile = '/tmp/ai-review-result.md';
+
+            if (!fs.existsSync(resultFile)) {
+              core.warning('Relatorio do AI Review nao foi gerado.');
+              return;
+            }
+
+            const body = fs.readFileSync(resultFile, 'utf8');
+            const marker = '<!-- technova-ai-review -->';
+
+            const { data: comments } =
+              await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                per_page: 100
+              });
+
+            const previousComment = comments.find(
+              comment =>
+                comment.user?.type === 'Bot' &&
+                comment.body?.includes(marker)
+            );
+
+            if (previousComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: previousComment.id,
+                body
+              });
+
+              console.log('Comentario anterior atualizado.');
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+
+              console.log('Novo comentario criado.');
+            }

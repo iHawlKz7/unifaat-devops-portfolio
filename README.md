@@ -1,5 +1,8 @@
 # Portfólio DevOps — UniFAAT 2026-2
 
+![CI Pipeline - Aula 08](https://github.com/iHawlKz7/unifaat-devops-portfolio/actions/workflows/ci-aula08.yml/badge.svg)
+
+
 **Aluno:** [Emar Cristian Silva Teruo ito]
 **RA:** [6325192]  
 **Disciplina:** DevOps — Centro Universitário UniFAAT  

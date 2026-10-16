@@ -1,0 +1,145 @@
+name: CI Pipeline - Aula 08
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'aula-08/technova-api/**'
+      - '.github/workflows/ci-aula08.yml'
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'aula-08/technova-api/**'
+      - '.github/workflows/ci-aula08.yml'
+
+  workflow_dispatch:
+
+concurrency:
+  group: aula08-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: aula-08/technova-api
+
+jobs:
+  lint:
+    name: Lint (ESLint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: aula-08/technova-api/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Executar ESLint
+        run: npm run lint
+
+  test:
+    name: Tests (Node ${{ matrix.node-version }})
+    needs: lint
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - '18'
+          - '20'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: aula-08/technova-api/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Executar testes com coverage
+        run: npm run test:ci
+
+      - name: Publicar coverage
+        if: always() && matrix.node-version == '20'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-aula-08
+          path: aula-08/technova-api/coverage/
+          retention-days: 14
+
+  build:
+    name: Build (Docker)
+    needs:
+      - lint
+      - test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build da imagem Docker
+        run: docker build -t technova-api:${{ github.sha }} .
+
+      - name: Verificar imagem
+        run: docker images technova-api
+
+      - name: Iniciar container para smoke test
+        run: docker run -d --name technova-aula08-ci -p 127.0.0.1::3000 technova-api:${{ github.sha }}
+
+      - name: Smoke test do health check
+        run: |
+          HOST_PORT=$(docker inspect -f '{{(index (index .NetworkSettings.Ports "3000/tcp") 0).HostPort}}' technova-aula08-ci)
+          echo "Porta atribuida pelo Docker: $HOST_PORT"
+
+          for i in {1..10}; do
+            if curl -fsS "http://127.0.0.1:$HOST_PORT/health"; then
+              echo
+              echo "Smoke test concluido com sucesso."
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "A API nao respondeu a tempo."
+          docker logs technova-aula08-ci
+          exit 1
+
+      - name: Remover container de teste
+        if: always()
+        run: docker rm -f technova-aula08-ci 2>/dev/null || true
+
+  verify-secret:
+    name: Verify Secret
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validar AWS_REGION
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          if [ -z "$AWS_REGION" ]; then
+            echo "AWS_REGION nao foi configurado."
+            exit 1
+          fi
+
+          echo "AWS_REGION carregado do GitHub Secrets."
+          echo "Valor mascarado: $AWS_REGION"

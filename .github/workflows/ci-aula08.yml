@@ -132,6 +132,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Validar AWS_REGION
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}

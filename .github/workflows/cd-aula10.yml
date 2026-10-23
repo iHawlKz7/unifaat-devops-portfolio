@@ -1,0 +1,164 @@
+name: CD Pipeline - Aula 10
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'aula-10/technova-api/**'
+      - '.github/workflows/cd-aula10.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  IMAGE_NAME: technova-api
+  APP_DIR: aula-10/technova-api
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: aula-10/technova-api/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: ${{ env.APP_DIR }}
+        run: npm ci
+
+      - name: Executar ESLint
+        working-directory: ${{ env.APP_DIR }}
+        run: npm run lint
+
+  test:
+    name: Test
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: aula-10/technova-api/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: ${{ env.APP_DIR }}
+        run: npm ci
+
+      - name: Executar Jest com coverage
+        working-directory: ${{ env.APP_DIR }}
+        run: npm run test:ci
+
+  build-push:
+    name: Build and Push ECR
+    needs:
+      - lint
+      - test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login no Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build e Push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./aula-10/technova-api
+          file: ./aula-10/technova-api/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.ecr.outputs.registry }}/${{ env.IMAGE_NAME }}:latest
+            ${{ steps.ecr.outputs.registry }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy Recreate
+    needs: build-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH na EC2
+        uses: appleboy/ssh-action@v1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          GITHUB_SHA: ${{ github.sha }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_SESSION_TOKEN,AWS_ACCOUNT_ID,GITHUB_SHA
+          script: |
+            set -e
+
+            REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com"
+            IMAGE="${REGISTRY}/technova-api:${GITHUB_SHA}"
+
+            aws ecr get-login-password --region us-east-1 \
+              | docker login --username AWS --password-stdin "$REGISTRY"
+
+            docker pull "$IMAGE"
+
+            docker stop technova-api 2>/dev/null || true
+            docker rm technova-api 2>/dev/null || true
+
+            docker run -d \
+              --name technova-api \
+              -p 3000:3000 \
+              --restart unless-stopped \
+              -e NODE_ENV=production \
+              -e GITHUB_SHA="$GITHUB_SHA" \
+              "$IMAGE"
+
+            docker ps --filter name=technova-api
+
+      - name: Health Check
+        shell: bash
+        run: |
+          for i in $(seq 1 20); do
+            if curl -fsS "http://${{ secrets.EC2_HOST }}:3000/health"; then
+              echo
+              echo "Health check passou."
+              exit 0
+            fi
+
+            echo "Tentativa $i/20..."
+            sleep 5
+          done
+
+          echo "Health check falhou."
+          exit 1
